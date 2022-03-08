@@ -1,0 +1,101 @@
+import java.util.*;
+import java.io.*;
+
+public class mainMethod {
+	static Scanner console = new Scanner(System.in);
+	public static void main(String[] args) {
+		//creates a file in the eclipse project src folder
+			File myFile = new File("src/Morse_Code");
+			
+			TreeNode head = new TreeNode(' ');
+			//puts each line inside of the text file into the project's methods
+			//and prints their outputs in a user-friendly way
+			BufferedReader reader;
+			try {
+				reader = new BufferedReader(new FileReader(myFile));
+				String lineStr = reader.readLine();
+				while (lineStr != null) {
+					treeBuilder(lineStr, head);
+					lineStr = reader.readLine();
+				}
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			
+			String option = "f";
+			while (option.charAt(0) != 'q') {
+				System.out.println("MENU");
+				System.out.println("e - Encode message");
+				System.out.println("d - Decode message");
+		        System.out.println("q - Quit");
+		        System.out.println("");
+		        System.out.println("Choose an option: ");
+				option = console.next();
+				
+				//e
+				if (option.charAt(0) == 'e') {
+					System.out.println("Enter message to encode: ");
+					
+				}
+				//d
+				if (option.charAt(0) == 'd') {
+					System.out.println("Enter message to decode: ");
+					
+				}
+				
+				System.out.println();
+			}//end while loop
+			
+			System.out.println("Have a nice day, PROGRAM TERMINATED");			
+	}//end main
+	
+	
+
+	//Wrapper method
+	public static void treeBuilder(String line, TreeNode head) {
+		treeBuilder(line, 0, head);
+	}//end treeBuilder
+	 
+	public static TreeNode treeBuilder(String line, int pos, TreeNode root) {	
+		pos++;
+		boolean finished = false;
+		if (pos == line.length()) {
+			finished = true;
+			if (root == null) {
+				TreeNode newNode = new TreeNode(line.charAt(0));
+				root = newNode;
+			}
+			else {
+				root.val = line.charAt(0);
+			}
+			
+		}
+		if (finished == false) {
+			if (line.charAt(pos) == '.') {
+				if (root == null) {
+					TreeNode newNode = new TreeNode('0');
+					root = newNode;
+					root.left = treeBuilder(line, pos, root.left);
+				}
+				else {
+					root.left = treeBuilder(line, pos, root.left);
+				}
+			}//end if
+			
+			if (line.charAt(pos) == '-') {
+				if (root == null) {
+					TreeNode newNode = new TreeNode('0');
+					root = newNode;
+					root.right = treeBuilder(line, pos, root.right);
+				}
+				else {
+					root.right = treeBuilder(line, pos, root.right);
+				}
+			}//end if
+		}
+		return root;
+	}//end treeBuilder
+	
+}//end class
