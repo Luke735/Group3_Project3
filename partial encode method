@@ -41,14 +41,24 @@ public class mainMethod {
 					String toEncode = console.next();
 					StringBuilder encodedStr = new StringBuilder();
 					for (int i = 0; i < toEncode.length(); i++) {
-						encodedStr.append(encode(toEncode.charAt(i), "", head));
+						encodedStr.append(encode(toEncode.charAt(i), "", head) + " ");
 						
 					}
-					
+					System.out.println(encodedStr.toString());
 				}
 				//d
 				if (option.charAt(0) == 'd') {
 					System.out.println("Enter message to decode: ");
+					String fullStrtoDecode = console.next();
+					StringBuilder strToDecode = new StringBuilder();
+					for (int i = 0; i < fullStrtoDecode.length(); i++) {
+						if (fullStrtoDecode.charAt(i) != ' ') {
+							strToDecode.append(fullStrtoDecode.charAt(i));
+						}
+						else {
+							decode(strToDecode.toString(), 0, head);
+						}
+					}
 					
 				}
 				
@@ -63,14 +73,22 @@ public class mainMethod {
 		if (root.val == letter) {
 			return encodedStr += "1";
 		}
-		String leftStr = encode(letter, encodedStr += ".", ++pos, root.left);
-		String rightStr = encode(letter, encodedStr += "-", ++pos, root.right);
-		if (encodedStr.charAt(encodedStr.length()-1) == '1') {
-			encodedStr.charAt(pos)
+		String leftStr = encode(letter, encodedStr += ".", root.left);
+		String rightStr = encode(letter, encodedStr += "-",  root.right);
+		if (leftStr.charAt(encodedStr.length()-1) == '1') {
+			
+		}
+		if (rightStr.charAt(encodedStr.length()-1) == '1') {
+			
 		}
 		
 	}
 	
+	public static char decode(String toDecode, int pos, TreeNode root) {
+		
+			
+	}
+
 	
 	//Wrapper method
 	public static void treeBuilder(String line, TreeNode head) {
