@@ -51,15 +51,17 @@ public class mainMethod {
 					System.out.println("Enter message to decode: ");
 					String fullStrtoDecode = console.next();
 					StringBuilder strToDecode = new StringBuilder();
+					String answer = "";
 					for (int i = 0; i < fullStrtoDecode.length(); i++) {
 						if (fullStrtoDecode.charAt(i) != ' ') {
 							strToDecode.append(fullStrtoDecode.charAt(i));
 						}
 						else {
-							decode(strToDecode.toString(), 0, head);
+							answer += decode(strToDecode.toString(), 0, head);
+							strToDecode.delete(0, strToDecode.length()-1);
 						}
 					}
-					
+					System.out.println(answer);
 				}
 				
 				System.out.println();
