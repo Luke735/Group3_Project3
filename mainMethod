@@ -2,6 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class mainMethod {
+	static final int COUNT = 10;
 	static Scanner console = new Scanner(System.in);
 	public static void main(String[] args) {
 		//creates a file in the eclipse project src folder
@@ -22,7 +23,7 @@ public class mainMethod {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
+			print2D(head);
 			
 			String option = "f";
 			while (option.charAt(0) != 'q') {
@@ -32,17 +33,41 @@ public class mainMethod {
 		        System.out.println("q - Quit");
 		        System.out.println("");
 		        System.out.println("Choose an option: ");
-				option = console.next();
+				option = console.nextLine();
 				
 				//e
 				if (option.charAt(0) == 'e') {
 					System.out.println("Enter message to encode: ");
-					
+					String toEncode = console.nextLine();
+					StringBuilder encodedStr = new StringBuilder();
+					for (int i = 0; i < toEncode.length(); i++) {
+						//encodedStr.append(encode(toEncode.charAt(i), "", head) + " ");
+						
+					}
+					System.out.println(encodedStr.toString());
 				}
-				//d
+				//d - Decode option
 				if (option.charAt(0) == 'd') {
 					System.out.println("Enter message to decode: ");
-					
+					//Full string of morse code - separated by spaces (append space in case user doesn't).
+					String fullStrtoDecode = console.nextLine()+' ';
+					StringBuilder strToDecode = new StringBuilder();
+					String answer = "";
+					//Iterate over morsecode
+					for (int i = 0; i < fullStrtoDecode.length(); i++) {
+						if(strToDecode.length() == 0) { strToDecode = new StringBuilder(); }
+						if (fullStrtoDecode.charAt(i) != ' ') {
+							strToDecode.append(fullStrtoDecode.charAt(i));
+						}
+						else {
+							//Append decoded morse code to full answer and reset strToDecode for next loop
+							answer += decode(strToDecode.toString()+' ', 0, head);
+							strToDecode.delete(0, strToDecode.length()-1);
+							strToDecode.setLength(0);
+						}
+					}
+					//Print answer
+					System.out.println(answer);
 				}
 				
 				System.out.println();
@@ -50,9 +75,36 @@ public class mainMethod {
 			
 			System.out.println("Have a nice day, PROGRAM TERMINATED");			
 	}//end main
-	
-	
 
+	/*public static String encode(char letter, String encodedStr, TreeNode root) {
+		
+		if (root.val == letter) {
+			return encodedStr += "1";
+		}
+		
+		String leftStr = encode(letter, encodedStr += ".", root.left);
+		String rightStr = encode(letter, encodedStr += "-",  root.right);
+		if (leftStr.charAt(encodedStr.length()-1) == '1') {
+			
+		}
+		if (rightStr.charAt(encodedStr.length()-1) == '1') {
+			
+		}
+		
+	}*/
+	
+	public static char decode(String toDecode, int pos, TreeNode root) {
+		if(toDecode.charAt(pos) == '.') {
+			pos+=1;
+			return decode(toDecode, pos, root.left);
+		}else if(toDecode.charAt(pos) == '-') {
+			pos+=1;
+			return decode(toDecode, pos, root.right);
+		}
+		return root.val;
+	}
+
+	
 	//Wrapper method
 	public static void treeBuilder(String line, TreeNode head) {
 		treeBuilder(line, 0, head);
@@ -98,4 +150,34 @@ public class mainMethod {
 		return root;
 	}//end treeBuilder
 	
+	
+	static void print2DUtil(TreeNode root, int space)
+	{
+	    // Base case
+	    if (root == null)
+	        return;
+	 
+	    // Increase distance between levels
+	    space += COUNT;
+	 
+	    // Process right child first
+	    print2DUtil(root.right, space);
+	 
+	    // Print current node after space
+	    // count
+	    System.out.print("\n");
+	    for (int i = COUNT; i < space; i++)
+	        System.out.print(" ");
+	    System.out.print(root.val + "\n");
+	 
+	    // Process left child
+	    print2DUtil(root.left, space);
+	}
+	 
+	// Wrapper over print2DUtil()
+	static void print2D(TreeNode root)
+	{
+	    // Pass initial space count as 0
+	    print2DUtil(root, 0);
+	}
 }//end class
