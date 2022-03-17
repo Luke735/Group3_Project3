@@ -5,8 +5,8 @@ public class mainMethod {
 	static final int COUNT = 10;
 	static Scanner console = new Scanner(System.in);
 	public static void main(String[] args) {
-		//creates a file in the eclipse project src folder
-			File myFile = new File("src/Morse_Code");
+		//looks for file in the eclipse project src folder
+			File myFile = new File("src/Morse_Code.txt");
 			
 			TreeNode head = new TreeNode(' ');
 			//puts each line inside of the text file into the project's methods
@@ -36,16 +36,19 @@ public class mainMethod {
 				option = console.nextLine();
 				
 				//e
-				if (option.charAt(0) == 'e') {
-					System.out.println("Enter message to encode: ");
-					String toEncode = console.nextLine();
-					StringBuilder encodedStr = new StringBuilder();
-					for (int i = 0; i < toEncode.length(); i++) {
-						//encodedStr.append(encode(toEncode.charAt(i), "", head) + " ");
-						
-					}
-					System.out.println(encodedStr.toString());
-				}
+                if (option.charAt(0) == 'e') {
+                    System.out.println("Enter message to encode:");
+                    String toEncode = console.nextLine();
+                    StringBuilder encodedStr = new StringBuilder();
+                    for (int i = 0; i < toEncode.length(); i++) {
+                        if(toEncode.charAt(i) == ' ') {encodedStr.append(' ');}
+                        else{
+                            //append morse code for given character, function returns morse code with 1 appended
+                            encodedStr.append(encode(toEncode.charAt(i), "", head).replace("1", ""));
+                        }
+                    }
+                    System.out.println("Message Encoded into Morse Code: " + encodedStr.toString());
+                }
 				//d - Decode option
 				if (option.charAt(0) == 'd') {
 					System.out.println("Enter message to decode: ");
@@ -53,7 +56,7 @@ public class mainMethod {
 					String fullStrtoDecode = console.nextLine()+' ';
 					StringBuilder strToDecode = new StringBuilder();
 					String answer = "";
-					//Iterate over morsecode
+					//Iterate over morse code
 					for (int i = 0; i < fullStrtoDecode.length(); i++) {
 						if(strToDecode.length() == 0) { strToDecode = new StringBuilder(); }
 						if (fullStrtoDecode.charAt(i) != ' ') {
@@ -67,7 +70,7 @@ public class mainMethod {
 						}
 					}
 					//Print answer
-					System.out.println(answer);
+					System.out.println("The Morse Code Message was Decoded: " + answer);
 				}
 				
 				System.out.println();
@@ -76,14 +79,14 @@ public class mainMethod {
 			System.out.println("Have a nice day, PROGRAM TERMINATED");			
 	}//end main
 
-	 // Converts lowercase plaintext (with no spaces) to morse code form.
+	 // Converts lower-case plain-text (with no spaces) to Morse Code form.
     public static String encode(char letter, String encodedStr, TreeNode root) {
         //If desired letter is found in node, append 1 for identification through recursion
         if(root.val == letter) {
             return encodedStr+" 1";
         }else {
             
-            //Propogate through left and right subtrees
+            //Propagate through left and right subtrees
             String leftStr = null, rightStr = null;
             if(root.left != null) {//Out of bounds check
                 leftStr = (root.left.val != ' ') ? encode(letter, encodedStr+".", root.left) : null;
@@ -102,7 +105,7 @@ public class mainMethod {
             return "";
         }
     }
-	
+	//Decode function taking position of char (.) and (-)
 	public static char decode(String toDecode, int pos, TreeNode root) {
 		if(toDecode.charAt(pos) == '.') {
 			pos+=1;
