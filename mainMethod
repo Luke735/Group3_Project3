@@ -76,22 +76,32 @@ public class mainMethod {
 			System.out.println("Have a nice day, PROGRAM TERMINATED");			
 	}//end main
 
-	/*public static String encode(char letter, String encodedStr, TreeNode root) {
-		
-		if (root.val == letter) {
-			return encodedStr += "1";
-		}
-		
-		String leftStr = encode(letter, encodedStr += ".", root.left);
-		String rightStr = encode(letter, encodedStr += "-",  root.right);
-		if (leftStr.charAt(encodedStr.length()-1) == '1') {
-			
-		}
-		if (rightStr.charAt(encodedStr.length()-1) == '1') {
-			
-		}
-		
-	}*/
+	 // Converts lowercase plaintext (with no spaces) to morse code form.
+    public static String encode(char letter, String encodedStr, TreeNode root) {
+        //If desired letter is found in node, append 1 for identification through recursion
+        if(root.val == letter) {
+            return encodedStr+" 1";
+        }else {
+            
+            //Propogate through left and right subtrees
+            String leftStr = null, rightStr = null;
+            if(root.left != null) {//Out of bounds check
+                leftStr = (root.left.val != ' ') ? encode(letter, encodedStr+".", root.left) : null;
+                if(leftStr.contains("1")) {
+                    return leftStr;
+                }
+            }
+            
+            if(root.right != null) {
+                rightStr = (root.right.val != ' ') ? encode(letter, encodedStr+"-", root.right) : null;
+                if(rightStr.contains("1")) {
+                    return rightStr;
+                }
+            }
+            
+            return "";
+        }
+    }
 	
 	public static char decode(String toDecode, int pos, TreeNode root) {
 		if(toDecode.charAt(pos) == '.') {
